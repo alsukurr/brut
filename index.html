@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>brutalust</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body,h1,h2,h3,h4,p,figure,blockquote,dl,dd{margin:0}ul[role="list"],ol[role="list"]{list-style:none}html:focus-within{scroll-behavior:smooth}body{min-height:100vh;text-rendering:optimizeSpeed;line-height:1.5}a:not([class]){text-decoration-skip-ink:auto}img,picture{max-width:100%;display:block}input,button,textarea,select{font:inherit}@media(prefers-reduced-motion:reduce){html:focus-within{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}}
+
+    @font-face {
+      font-family: iA Writer Mono;
+      font-style: italic;
+      src: url(iawritermonov-italic.ttf);
+    }
+    html, body {
+      scroll-snap-type: y mandatory;
+      height: 100%;
+      overflow-y: scroll;
+    }
+    body {
+      font-family: iA Writer Mono, serif;
+      font-style: italic;
+      font-size: 4vmax;
+      line-height: 1.2;
+
+      background-color: #000;
+      color: #fff;
+    }
+    section {
+      height: 100vh;
+      padding: 64px;
+      /* position: sticky;
+      top: 0;
+      left: 0; */
+      background-size: 60vmax auto;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-attachment: fixed;
+
+      scroll-snap-align: start;
+
+    }
+    section:nth-of-type(1) {
+      background-color: #000;
+      background-image: url(image1.jpg);
+      color: #fff;
+    }
+    section:nth-of-type(2) {
+      background-color: #fff;
+      background-image: url(image2.jpg);
+      color: #000;
+    }
+    section:nth-of-type(3) {
+      background-color: #000;
+      background-image: url(image3.jpg);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <h1>Byron Bay</h1>
+    <h2>Alsu Rose</h2>
+  </section>
+  <section>
+    <h1>City of Paris</h1>
+    <h2>Aliya Daisy</h2>
+  </section>
+  <section>
+    <h1>Palm Springs</h1>
+    <h2>Cecilia Aguilar</h2>
+  </section>
+  
+</body>
+<script>
+  const headers = [...document.querySelectorAll('h1, h2')];
+  const random = header => {
+    const og = header.dataset.original;
+    let neW = '';
+    let num = 0;
+    let randomList = 'qwertyuiopasdfghjklzxcvbnm'.split('').sort();
+    randomList.push('.', '_', '$', '&', '@', '!');
+    console.log(randomList);
+
+
+    const addInterval = setInterval(() => {
+      num = num + 1;
+      neW = og.substring(0, num);
+
+      if(og == header.innerHTML) {
+        clearInterval(addInterval);
+        clearInterval(randomInterval);
+      }
+    }, 150);
+
+    const randomInterval = setInterval(() => {
+      header.innerHTML = neW;
+
+      for (let i = neW.length; i < og.length; i++) {
+        header.innerHTML = header.innerHTML + randomList[Math.floor(Math.random() * randomList.length)];
+      }
+    }, 50);
+
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.map(entry => {
+      if( entry.intersectionRatio > 0.5) {
+        random(entry.target);
+      }
+    })
+  }, {
+    threshold: [0, 0.5, 1]
+  })
+
+  headers.map(header => {
+    header.dataset.original = header.innerHTML;
+    observer.observe(header)
+  });
+
+</script>
+</html>
